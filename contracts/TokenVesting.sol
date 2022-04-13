@@ -26,6 +26,7 @@ contract TokenVesting {
     uint256 vestingId;
     uint256[] allVestingIds;
     mapping(uint256 => Vesting) public vested;
+    mapping(address => Vesting) vestedAddress;
 
     receive() external payable {}
 
@@ -35,6 +36,7 @@ contract TokenVesting {
         totalTokens = token.totalSupply();
     }
 
+    // Creating Vesting
     function createVesting(vestingRoles _role, address _beneficiary)
         public
         onlyAdmin
@@ -70,9 +72,19 @@ contract TokenVesting {
             tokenGeneration,
             totalTokenPercent
         );
+        vestedAddress[_beneficiary] = Vesting(
+            _role,
+            _beneficiary,
+            _cliff,
+            _startTime,
+            _timeDuration,
+            tokenGeneration,
+            totalTokenPercent
+        );
         allVestingIds.push(vestingId);
     }
 
+    // Release address vesting
     function releaseVesting(uint256 _id) public {
         require(vested[_id].beneficiary == address(0), "Id not found");
         require(
@@ -88,11 +100,12 @@ contract TokenVesting {
             vested[_id].timeDuration,
             vested[_id].totalAmountPercent
         );
-        token.transfer(reciever, _amount);
+        token.transferFrom(admin, reciever, _amount);
         delete allVestingIds[_id];
         delete vested[_id];
     }
 
+    // calculation of tokens according to the time
     function finalTokenAmount(uint256 _duration, uint16 _percent)
         internal
         view
@@ -112,6 +125,12 @@ contract TokenVesting {
                 totalMonthsLeft;
         }
         return totalAmountNow;
+    }
+
+    // Checking if address is already vested
+    function isVested(address _beneficiary) public view returns (bool) {
+        if (vestedAddress[_beneficiary].beneficiary != address(0)) return true;
+        else return false;
     }
 
     function getAllVestedId() public view returns (uint256[] memory) {
