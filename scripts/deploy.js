@@ -6,11 +6,11 @@ async function main() {
 
   // deploying TokenVesting contract
   const TokenVesting = await ethers.getContractFactory("TokenVesting");
-  vesting = await TokenVesting.deploy(vestToken.address);
+  vesting = await TokenVesting.deploy(token.address);
   await vesting.deployed();
 
   console.log("Token deployed to:", token.address);
-  console.log("Staking contract deployed to:", vesting.address);
+  console.log("Vesting contract deployed to:", vesting.address);
 
 }
 

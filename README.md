@@ -1,15 +1,81 @@
-# Basic Sample Hardhat Project
+## Vesting Smart Contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This Project is deployed on the Rinkeby testnet
 
-Try running some of the following tasks:
+ERC20 Token (Vest Token) address: [0x89074609269dDD36732B506195073A45fD740f6b](https://rinkeby.etherscan.io/address/0x89074609269dDD36732B506195073A45fD740f6b)
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
+
+Vesting contract address: [0x203e0936222ea61aa7D58482a646Cc6FF17079f3](https://rinkeby.etherscan.io/address/0x203e0936222ea61aa7D58482a646Cc6FF17079f3)
+
+### Usage
+
+Before running any command, make sure to install dependencies:
+
+`npm install`
+
+#### Compile
+
+Compile the smart contracts with Hardhat: 
+
+`npx hardhat compile`
+
+#### Test
+
+Run the tests:
+
+`npx hardhat test`
+
+#### Deploy
+
+deploy contract to netowrk: 
+
+`npx hardhat run --network rinkeby scripts/deploy.js`
+
+
+vesting smart contract will be created after the creation of ERC20 token (Vest Token), because the Staking smart contract parameters in its constructor to define the token.
+
+`constructor(VestToken _tokenAddress) {}`
+
+functions need to call before stacking
+
 ```
+approve(address spender, uint256 amount)
+``` 
+
+this function is used to approve contract address to spend on behalf of user.
+
+The function takes the following arguments:
+
+- `spender`: This is the address of the spender to whom the approval rights should be given or revoked from the approver.
+- `amount`: This is amount of tokens can be spend.
+
+
+### How to use Vesting
+
+In stacking smart contract function `createVesting()` is used to do Vesting of the ERC20 token.
+
+this function has following arguments:
+
+- `vestingRoles _role` : Where `vestingRole` is the enum created to define the 3 given roles (Advisor (0), Partnerships(1), Mentors(2))
+- `address _beneficiary` : It is the address on which the vesting will be done.
+
+#### Important components in vesting:
+- `vestingRoles role` - user roles e.i. Advisor (0), Partnerships(1), Mentors(2)
+- `address beneficiary` - address on which the vesting will be done.
+- `uint256 cliff` - Cliff of token vesting (2 months) 
+- `uint256 startTime` - time when tokens are vested
+- `uint256 timeDuration` - ideal time till vesting will go on (22 months)
+- `uint256 amountAfterVesting` - reward token amount will receive after vesting
+- `uint16 totalAmountPercent` - reward %
+
+When vesting is done an Id is created and that id will help to check the vesting data with the help of `vested(uint256 id)`, and to check if the particular address is already vested the function `isVested(address _beneficiary)` can be called which returns `true` or `false`, True if address is already in vested list and false when address is not vested.
+
+
+### How to Release Vesting
+
+The `releaseVesting()` function is used to complete the process of releasing the vesting created
+
+This function is only callable by either admin or the beneficiary of the actual vesting created
+
+This function has one parameter:
+- `uint256 _id`: Id created after vesting is done
