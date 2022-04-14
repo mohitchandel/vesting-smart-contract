@@ -37,19 +37,11 @@ contract TokenVesting {
     }
 
     // Creating Vesting
-    function createVesting(vestingRoles _role, address _beneficiary)
-        public
-        onlyAdmin
-    {
-        require(
-            _role <= vestingRoles.Mentors,
-            "Only roles are Advisor(0), Partnerships(1) and Mentors(2)"
-        );
+    function createVesting(vestingRoles _role, address _beneficiary) public onlyAdmin{
+        require(_role <= vestingRoles.Mentors, "Only roles are Advisor(0), Partnerships(1) and Mentors(2)");
         vestingId += 1;
         uint256 _startTime = block.timestamp;
-        // Cliff of 2 months
         uint256 _cliff = block.timestamp + 60 days;
-        // vesting time period (22 months)
         uint256 _timeDuration = block.timestamp + (22 * 30 days);
         uint256 tokenGeneration;
         uint16 totalTokenPercent;
@@ -106,11 +98,7 @@ contract TokenVesting {
     }
 
     // calculation of tokens according to the time
-    function finalTokenAmount(uint256 _duration, uint16 _percent)
-        internal
-        view
-        returns (uint256)
-    {
+    function finalTokenAmount(uint256 _duration, uint16 _percent) internal view returns (uint256) {
         uint256 totalTokenAmount = token.totalSupply();
         uint256 totalMonthsLeft = ((_duration - block.timestamp) /
             60 /
