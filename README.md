@@ -2,10 +2,10 @@
 
 This Project is deployed on the Rinkeby testnet
 
-ERC20 Token (Vest Token) address: [0x89074609269dDD36732B506195073A45fD740f6b](https://rinkeby.etherscan.io/address/0x89074609269dDD36732B506195073A45fD740f6b)
+ERC20 Token (Vest Token) address: [0x88f822549cB11d106b44A4cF24393514325D467D](https://rinkeby.etherscan.io/address/0x88f822549cB11d106b44A4cF24393514325D467D)
 
 
-Vesting contract address: [0x203e0936222ea61aa7D58482a646Cc6FF17079f3](https://rinkeby.etherscan.io/address/0x203e0936222ea61aa7D58482a646Cc6FF17079f3)
+Vesting contract address: [0x5F9e921f0BDa07205D2c4E19CDc19BFacB85bA48](https://rinkeby.etherscan.io/address/0x5F9e921f0BDa07205D2c4E19CDc19BFacB85bA48)
 
 ### Usage
 
