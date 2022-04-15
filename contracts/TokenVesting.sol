@@ -81,8 +81,7 @@ contract TokenVesting {
             vested[_beneficiary].timeDuration,
             vested[_beneficiary].totalAmountPercent
         );
-        if (vested[_beneficiary].cliff <= block.timestamp)
-            token.transferFrom(admin, reciever, _amount);
+        if (vested[_beneficiary].cliff < block.timestamp) token.transferFrom(admin, reciever, _amount);
         delete vested[_beneficiary];
     }
 
